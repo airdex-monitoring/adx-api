@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    url: ${ADX_DATASOURCE_URL:jdbc:postgresql://localhost:5432/postgres}
+    username: ${ADX_DATASOURCE_USERNAME:postgres}
+    password: ${ADX_DATASOURCE_PASSWORD:postgres}
