@@ -33,7 +33,7 @@ jobs:
   deploy:
     name: Deploy to production
     needs: publish
-    runs-on: [node-1, master]
+    runs-on: [self-hosted]
 
     steps:
       - name: Login to ghcr
