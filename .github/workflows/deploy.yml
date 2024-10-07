@@ -30,16 +30,18 @@ jobs:
           docker build . --tag ghcr.io/airdex-monitoring/adx-api:latest
           docker push ghcr.io/airdex-monitoring/adx-api:latest
 
-#  deploy:
-#    name: Deploy to production
-#    needs: publish
-#    runs-on: [node-1, master]
-#
-#    steps:
-##      - name: Pull newer images from registry
-##        working-directory: ${{ secrets.VM_WORKING_DIR }}
-##        run: docker compose -f ${{ secrets.VM_COMPOSE_FILE }} pull ms-backend
-#
-#      - name: Deploy docker stack
-#        working-directory: ${{ secrets.VM_WORKING_DIR }}
-#        run: docker stack deploy adx-api
+  deploy:
+    name: Deploy to production
+    needs: publish
+    runs-on: [node-1, master]
+
+    steps:
+      - name: Login to ghcr
+        run: cat /deploy/ghcr_crpat.txt | docker login ghcr.io -u airdex-monitoring --password-stdin
+
+      - name: Pull image from ghcr'
+        run: docker pull ghcr.io/airdex-monitoring/adx-api:latest
+
+      - name: Deploy docker stack
+        working-directory: /deploy/adx-api
+        run: docker stack deploy adx-api
