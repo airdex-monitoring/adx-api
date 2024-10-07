@@ -37,11 +37,11 @@ jobs:
 
     steps:
       - name: Login to ghcr
-        run: cat /deploy/ghcr_crpat.txt | docker login ghcr.io -u airdex-monitoring --password-stdin
+        run: cat /root/deploy/ghcr_crpat.txt | docker login ghcr.io -u airdex-monitoring --password-stdin
 
       - name: Pull image from ghcr'
         run: docker pull ghcr.io/airdex-monitoring/adx-api:latest
 
       - name: Deploy docker stack
-        working-directory: /deploy/adx-api
+        working-directory: /root/deploy/adx-api
         run: docker stack deploy adx-api
