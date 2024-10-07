@@ -1,0 +1,2 @@
+--liquibase formatted sql
+--changeset zhomartkhan.talgatuly:071024_1
