@@ -44,4 +44,4 @@ jobs:
 
       - name: Deploy docker stack
         working-directory: /root/deploy/adx-api
-        run: docker stack deploy adx-api
+        run: docker stack --compose-file deploy adx-api
