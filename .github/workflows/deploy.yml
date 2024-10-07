@@ -1,0 +1,40 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+      - feature/**
+
+jobs:
+  runs-on: ubuntu-latest
+
+  steps:
+    - name: 'Checkout'
+      uses: actions/checkout@main
+
+    - name: 'Login to ghcr'
+      uses: docker/login-action@v1
+      with:
+        registry: ghcr.io
+        username: ${{github.actor}}
+        password: ${{secrets.GITHUB_TOKEN}}
+
+    - name: 'Build and push to ghcr'
+      run: |
+        docker build . --tag ghcr.io/airdex-monitoring/adx-api:latest
+        docker push ghcr.io/airdex-monitoring/adx-api:latest
+
+#  deploy:
+#    name: Deploy to production
+#    needs: publish
+#    runs-on: [node-1, master]
+#
+#    steps:
+##      - name: Pull newer images from registry
+##        working-directory: ${{ secrets.VM_WORKING_DIR }}
+##        run: docker compose -f ${{ secrets.VM_COMPOSE_FILE }} pull ms-backend
+#
+#      - name: Deploy docker stack
+#        working-directory: ${{ secrets.VM_WORKING_DIR }}
+#        run: docker stack deploy adx-api
