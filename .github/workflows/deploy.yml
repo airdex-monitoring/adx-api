@@ -1,0 +1,47 @@
+name: Deploy
+
+on:
+  push:
+    branches:
+      - main
+jobs:
+  publish:
+    name: Publish to Github Container Registry (ghcr)
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+
+    steps:
+      - name: 'Checkout'
+        uses: actions/checkout@main
+
+      - name: 'Login to ghcr'
+        uses: docker/login-action@v1
+        with:
+          registry: ghcr.io
+          username: ${{github.actor}}
+          password: ${{secrets.GITHUB_TOKEN}}
+
+      - name: 'Build and push to ghcr'
+        run: |
+          docker build . --tag ghcr.io/airdex-monitoring/adx-api:latest
+          docker push ghcr.io/airdex-monitoring/adx-api:latest
+
+  deploy:
+    name: Deploy to production
+    needs: publish
+    runs-on: [self-hosted]
+    env:
+      working-directory: /root/deploy
+
+    steps:
+      - name: Login to ghcr
+        run: cat ${{env.working-directory}}/ghcr_crpat.txt | docker login ghcr.io -u airdex-monitoring --password-stdin
+
+      - name: Pull image from ghcr'
+        run: docker pull ghcr.io/airdex-monitoring/adx-api:latest
+
+      - name: Deploy docker stack
+        working-directory: ${{env.working-directory}}/adx-api
+        run: docker stack deploy -c docker-compose-apistack.yml adx-api
