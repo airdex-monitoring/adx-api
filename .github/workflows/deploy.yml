@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-      - feature/**
-
 jobs:
   publish:
     name: Publish to Github Container Registry (ghcr)
