@@ -34,14 +34,16 @@ jobs:
     name: Deploy to production
     needs: publish
     runs-on: [self-hosted]
+    env:
+      working-directory: /root/deploy
 
     steps:
       - name: Login to ghcr
-        run: cat /root/deploy/ghcr_crpat.txt | docker login ghcr.io -u airdex-monitoring --password-stdin
+        run: cat ${{env.working-directory}}/ghcr_crpat.txt | docker login ghcr.io -u airdex-monitoring --password-stdin
 
       - name: Pull image from ghcr'
         run: docker pull ghcr.io/airdex-monitoring/adx-api:latest
 
       - name: Deploy docker stack
-        working-directory: /root/deploy/adx-api
-        run: docker stack deploy -c docker-compose.yml adx-api
+        working-directory: ${{env.working-directory}}/adx-api
+        run: docker stack deploy -c docker-compose-apistack.yml adx-api
