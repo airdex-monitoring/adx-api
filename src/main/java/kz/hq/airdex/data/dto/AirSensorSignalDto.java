@@ -1,5 +1,6 @@
 package kz.hq.airdex.data.dto;
 
+import kz.hq.airdex.data.constant.AqiLevel;
 import lombok.Builder;
 import lombok.Data;
 
@@ -20,4 +21,5 @@ public class AirSensorSignalDto {
     private Integer pm_10;
 
     private Integer aqi;
+    private AqiLevel aqiLevel;
 }
