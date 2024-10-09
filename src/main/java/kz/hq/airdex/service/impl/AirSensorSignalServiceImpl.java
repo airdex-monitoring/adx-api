@@ -2,7 +2,6 @@ package kz.hq.airdex.service.impl;
 
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
 import kz.hq.airdex.data.dto.request.AirSensorSignalAcceptRequest;
-import kz.hq.airdex.data.entity.AirSensorSignal;
 import kz.hq.airdex.data.mapper.AirSensorSignalMapper;
 import kz.hq.airdex.data.repository.AirSensorSignalRepository;
 import kz.hq.airdex.service.AirQualityIndexProvider;

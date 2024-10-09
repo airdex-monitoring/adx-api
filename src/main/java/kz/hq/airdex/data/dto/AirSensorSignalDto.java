@@ -1,7 +1,5 @@
 package kz.hq.airdex.data.dto;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Id;
 import lombok.Builder;
 import lombok.Data;
 
