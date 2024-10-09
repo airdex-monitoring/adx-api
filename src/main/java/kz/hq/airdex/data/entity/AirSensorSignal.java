@@ -1,22 +1,21 @@
 package kz.hq.airdex.data.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
+import kz.hq.airdex.data.constant.AqiLevel;
 import kz.hq.airdex.data.entity.abs.AbstractBaseEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.RequiredArgsConstructor;
 
-@EqualsAndHashCode(callSuper = true)
 @Entity
-@Table(name = "air_signal_signals", schema = "adx")
+@Table(name = "air_sensor_signals", schema = "adx")
 @Data
 @RequiredArgsConstructor
+@EqualsAndHashCode(callSuper = true)
 public class AirSensorSignal extends AbstractBaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "lat")
@@ -32,5 +31,8 @@ public class AirSensorSignal extends AbstractBaseEntity {
     private Integer pm_10;
 
     @Column(name = "aqi")
-    private Integer aqi;
+    private Double aqi;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "aqi_level")
+    private AqiLevel aqiLevel;
 }
