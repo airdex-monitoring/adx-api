@@ -1,10 +1,10 @@
 package kz.hq.airdex.data.dto.response;
 
-import lombok.Builder;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@Builder
+@AllArgsConstructor(staticName = "of")
 public class ResponseWrap<T> {
 
     private T content;
