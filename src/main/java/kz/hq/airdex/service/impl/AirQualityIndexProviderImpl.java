@@ -20,6 +20,7 @@ public class AirQualityIndexProviderImpl implements AirQualityIndexProvider {
         return aqi_pm + Aqi.Breakpoints.AQI_LOW_UNHEALTHY_FOR_SENSITIVE;
     }
 
+    @Override
     public AqiLevel getAqiLevel(Double aqi) {
         if (aqi == null) {
             return null;

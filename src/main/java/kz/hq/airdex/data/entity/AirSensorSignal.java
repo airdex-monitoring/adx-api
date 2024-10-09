@@ -15,6 +15,7 @@ import lombok.RequiredArgsConstructor;
 public class AirSensorSignal extends AbstractBaseEntity {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column(name = "lat")

@@ -29,7 +29,7 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
             .filter(signal -> signal.getPm_2_5() != null)
             .map(signal -> {
                 var aqi = airQualityIndexProvider.getIndex(signal.getPm_2_5());
-                var aqiLevel = airQualityIndexProvider.getAqiLevel(signal.getAqi());
+                var aqiLevel = airQualityIndexProvider.getAqiLevel(aqi);
                 signal.setAqi(aqi);
                 signal.setAqiLevel(aqiLevel);
                 return signal;
@@ -44,11 +44,5 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
         var signals = sensorSignalRepository.findAll(
             Sort.by(Sort.Direction.DESC, "createDate"));
         return sensorSignalMapper.map(signals);
-    }
-
-    private AirSensorSignal setAqiLevel(AirSensorSignal signal) {
-        var aqiLevel = airQualityIndexProvider.getAqiLevel(signal.getAqi());
-        signal.setAqiLevel(aqiLevel);
-        return signal;
     }
 }
