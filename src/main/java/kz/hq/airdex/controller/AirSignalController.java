@@ -2,7 +2,6 @@ package kz.hq.airdex.controller;
 
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
 import kz.hq.airdex.data.dto.request.AirSensorSignalAcceptRequest;
-import kz.hq.airdex.data.dto.response.ResponseWrap;
 import kz.hq.airdex.service.AirSensorSignalService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -18,14 +17,12 @@ public class AirSignalController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.OK)
-    public ResponseWrap<AirSensorSignalDto> save(@RequestBody AirSensorSignalAcceptRequest payload) {
-        var result = sensorSignalService.save(payload);
-        return ResponseWrap.of(result);
+    public AirSensorSignalDto save(@RequestBody AirSensorSignalAcceptRequest payload) {
+        return sensorSignalService.save(payload);
     }
 
     @GetMapping
-    public ResponseWrap<List<AirSensorSignalDto>> findAll() {
-        var signals = sensorSignalService.findAll();
-        return ResponseWrap.of(signals);
+    public List<AirSensorSignalDto> findAll() {
+        return sensorSignalService.findAll();
     }
 }
