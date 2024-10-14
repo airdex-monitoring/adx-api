@@ -14,10 +14,6 @@ import lombok.RequiredArgsConstructor;
 @EqualsAndHashCode(callSuper = true)
 public class AirSensorSignal extends AbstractBaseEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
-
     @Column(name = "lat")
     private Double lat;
     @Column(name = "lon")
@@ -35,4 +31,8 @@ public class AirSensorSignal extends AbstractBaseEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "aqi_level")
     private AqiLevel aqiLevel;
+
+    @ManyToOne
+    @JoinColumn(name = "sector_id")
+    private MapSector sector;
 }

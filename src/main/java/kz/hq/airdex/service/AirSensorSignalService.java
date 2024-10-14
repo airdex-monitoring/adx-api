@@ -10,4 +10,6 @@ public interface AirSensorSignalService {
     AirSensorSignalDto save(AirSensorSignalAcceptRequest payload);
 
     List<AirSensorSignalDto> findAll();
+
+    List<AirSensorSignalDto> findAll(Long sectorId);
 }
