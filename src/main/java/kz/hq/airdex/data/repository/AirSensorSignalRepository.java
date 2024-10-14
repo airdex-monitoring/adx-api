@@ -10,5 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface AirSensorSignalRepository extends JpaRepository<AirSensorSignal, Long> {
 
     @Query("SELECT a FROM AirSensorSignal a WHERE a.sector.id = :sectorId")
-    List<AirSensorSignal> findAll(Long sectorId);
+    List<AirSensorSignal> findAllBySector(Long sectorId);
 }

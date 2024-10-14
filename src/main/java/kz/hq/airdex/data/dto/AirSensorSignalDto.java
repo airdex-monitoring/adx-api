@@ -13,8 +13,7 @@ public class AirSensorSignalDto {
     private Long id;
     private LocalDateTime createDate;
 
-    private Double lat;
-    private Double lon;
+    private LatLngPointDto point;
 
     private Integer pm_1_0;
     private Integer pm_2_5;
