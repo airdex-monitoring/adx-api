@@ -12,6 +12,7 @@ import kz.hq.airdex.service.AirSensorSignalService;
 import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -44,7 +45,8 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
 
     @Override
     public List<AirSensorSignal> findAll() {
-        return sensorSignalRepository.findAll();
+        return sensorSignalRepository.findAll(
+            Sort.by(Direction.DESC, "createDate"));
     }
 
     @Override
