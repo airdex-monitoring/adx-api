@@ -17,7 +17,8 @@ public class AirQualityIndexProviderImpl implements AirQualityIndexProvider {
         double pm_2_5_actual_low_diff = (pm_2_5 - Aqi.Breakpoints.PM_HIGH_UNHEALTHY_FOR_SENSITIVE);
         double aqi_pm_diff = aqi_breakp_diff / pm_breakp_diff;
         double aqi_pm = aqi_pm_diff * pm_2_5_actual_low_diff;
-        return aqi_pm + Aqi.Breakpoints.AQI_LOW_UNHEALTHY_FOR_SENSITIVE;
+        double aqi = aqi_pm + Aqi.Breakpoints.AQI_LOW_UNHEALTHY_FOR_SENSITIVE;
+        return aqi < 0 ? 0 : aqi;
     }
 
     @Override
@@ -36,8 +37,10 @@ public class AirQualityIndexProviderImpl implements AirQualityIndexProvider {
             return AqiLevel.UNHEALTHY;
         } else if (aqi >= 201 && aqi <= 300) {
             return AqiLevel.VERY_UNHEALTHY;
-        } else {
+        } else if (aqi > 300) {
             return AqiLevel.HAZARDOUS;
         }
+
+        return null;
     }
 }

@@ -24,8 +24,8 @@ public class AqiController {
         return airSensorSignalService.findAll(sectorId);
     }
 
-    @GetMapping("/map-sectors")
+    @GetMapping("/map-sectors-avg")
     public List<?> findAllMapSectors() {
-        return mapSectorService.getAll();
+        return mapSectorService.getAllWithAvg();
     }
 }

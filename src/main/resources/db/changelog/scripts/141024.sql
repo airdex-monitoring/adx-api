@@ -39,3 +39,8 @@ INSERT INTO adx.map_sectors (code, points) VALUES ('C3', '[{"lat": 51.091291, "l
 INSERT INTO adx.map_sectors (code, points) VALUES ('C4', '[{"lat": 51.087286, "lon": 71.427740}, {"lat": 51.084438, "lon": 71.426748}, {"lat": 51.083726, "lon": 71.432344}, {"lat": 51.086574, "lon": 71.433407}]');
 INSERT INTO adx.map_sectors (code, points) VALUES ('D1', '[{"lat": 51.098009, "lon": 71.437728}, {"lat": 51.097119, "lon": 71.444246}, {"lat": 51.093249, "lon": 71.442900}, {"lat": 51.094227, "lon": 71.436241}]');
 INSERT INTO adx.map_sectors (code, points) VALUES ('D2', '[{"lat": 51.094227, "lon": 71.436241}, {"lat": 51.090446, "lon": 71.434824}, {"lat": 51.089553, "lon": 71.441352}, {"lat": 51.093249, "lon": 71.442900}]');
+
+--changeset zhomartkhan.talgatuly:141024_4
+
+DELETE FROM adx.air_sensor_signals ass
+    WHERE ass.sector_id IS NULL;

@@ -5,7 +5,10 @@ import java.util.Optional;
 import java.util.function.Predicate;
 import kz.hq.airdex.data.entity.LatLngPoint;
 import kz.hq.airdex.data.entity.MapSector;
+import kz.hq.airdex.data.entity.query.MapSectorAvg;
 import kz.hq.airdex.data.repository.MapSectorRepository;
+import kz.hq.airdex.data.repository.MapSectorStatsRepository;
+import kz.hq.airdex.service.AirQualityIndexProvider;
 import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Sort;
@@ -16,11 +19,25 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MapSectorServiceImpl implements MapSectorService {
     private final MapSectorRepository sectorRepository;
+    private final MapSectorStatsRepository sectorStatsRepository;
+
+    private final AirQualityIndexProvider airQualityIndexProvider;
 
     @Override
     public List<MapSector> getAll() {
         return sectorRepository.findAll(
             Sort.by(Direction.ASC, "code"));
+    }
+
+    @Override
+    public List<MapSectorAvg> getAllWithAvg() {
+        var sectors = sectorStatsRepository.findAllWithAvg();
+        return sectors.stream()
+            .peek(sector -> {
+                var aqiLevel = airQualityIndexProvider.getAqiLevel(sector.getAqiAvg());
+                sector.setAqiLevel(aqiLevel);
+            })
+            .toList();
     }
 
     @Override
