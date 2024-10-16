@@ -3,6 +3,8 @@ package kz.hq.airdex.service.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import kz.hq.airdex.data.dto.request.MapSectorQuery;
 import kz.hq.airdex.data.entity.LatLngPoint;
 import kz.hq.airdex.data.entity.MapSector;
 import kz.hq.airdex.data.entity.query.MapSectorAvg;
@@ -30,7 +32,7 @@ public class MapSectorServiceImpl implements MapSectorService {
     }
 
     @Override
-    public List<MapSectorAvg> getAllWithAvg() {
+    public List<MapSectorAvg> getAllWithAvg(MapSectorQuery query) {
         var sectors = sectorStatsRepository.findAllWithAvg();
         return sectors.stream()
             .peek(sector -> {

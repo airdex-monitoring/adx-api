@@ -2,6 +2,7 @@ package kz.hq.airdex.controller;
 
 import java.util.List;
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
+import kz.hq.airdex.data.dto.request.MapSectorQuery;
 import kz.hq.airdex.service.AirSensorSignalService;
 import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
@@ -25,7 +26,7 @@ public class AqiController {
     }
 
     @GetMapping("/map-sectors-avg")
-    public List<?> findAllMapSectors() {
-        return mapSectorService.getAllWithAvg();
+    public List<?> findAllMapSectors(MapSectorQuery query) {
+        return mapSectorService.getAllWithAvg(query);
     }
 }
