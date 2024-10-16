@@ -6,5 +6,7 @@ import kz.hq.airdex.data.entity.query.MapSectorAvg;
 
 public interface MapSectorStatsRepository {
 
+    List<MapSectorAvg> findAllWithAvg();
+
     List<MapSectorAvg> findAllWithAvg(LocalDate startDate, LocalDate endDate);
 }

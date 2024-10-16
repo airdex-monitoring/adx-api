@@ -33,8 +33,11 @@ public class MapSectorServiceImpl implements MapSectorService {
 
     @Override
     public List<MapSectorAvg> getAllWithAvg(MapSectorQuery query) {
-        var sectors = sectorStatsRepository.findAllWithAvg();
-        return sectors.stream()
+        return Optional.of(query)
+            .filter(q -> q.getStartDate() != null || q.getEndDate() != null)
+            .map(q -> sectorStatsRepository.findAllWithAvg(q.getStartDate(), q.getEndDate()))
+            .orElse(sectorStatsRepository.findAllWithAvg())
+            .stream()
             .peek(sector -> {
                 var aqiLevel = airQualityIndexProvider.getAqiLevel(sector.getAqiAvg());
                 sector.setAqiLevel(aqiLevel);

@@ -17,12 +17,19 @@ public class MapSectorStatsRepositoryImpl implements MapSectorStatsRepository {
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
+    public List<MapSectorAvg> findAllWithAvg() {
+        return jdbcTemplate.query(
+            Query.SELECT_MAP_SECTORS_WITH_AVG,
+            BeanPropertyRowMapper.newInstance(MapSectorAvg.class));
+    }
+
+    @Override
     public List<MapSectorAvg> findAllWithAvg(LocalDate startDate, LocalDate endDate) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("startDate", startDate);
         parameters.addValue("endDate", endDate);
         return jdbcTemplate.query(
-            Query.SELECT_MAP_SECTORS_WITH_AVG, parameters,
+            Query.SELECT_MAP_SECTORS_WITH_AVG_DATE_RANGE, parameters,
             BeanPropertyRowMapper.newInstance(MapSectorAvg.class));
     }
 }

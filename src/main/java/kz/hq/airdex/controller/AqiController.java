@@ -1,8 +1,11 @@
 package kz.hq.airdex.controller;
 
+import java.time.LocalDate;
 import java.util.List;
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
+import kz.hq.airdex.data.dto.request.AqiQuery;
 import kz.hq.airdex.data.dto.request.MapSectorQuery;
+import kz.hq.airdex.data.entity.query.MapSectorAvg;
 import kz.hq.airdex.service.AirSensorSignalService;
 import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +23,10 @@ public class AqiController {
 
     @GetMapping
     public List<AirSensorSignalDto> findAll(
-        @RequestParam(required = false) Long sectorId
+        @RequestParam(required = false) Long sectorId,
+        AqiQuery query
     ) {
-        return airSensorSignalService.findAll(sectorId);
+        return airSensorSignalService.findAll(sectorId, query);
     }
 
     @GetMapping("/map-sectors-avg")

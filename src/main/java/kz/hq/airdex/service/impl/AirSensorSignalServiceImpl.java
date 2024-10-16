@@ -3,6 +3,7 @@ package kz.hq.airdex.service.impl;
 import java.util.Collections;
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
 import kz.hq.airdex.data.dto.request.AirSensorSignalAcceptRequest;
+import kz.hq.airdex.data.dto.request.AqiQuery;
 import kz.hq.airdex.data.entity.AirSensorSignal;
 import kz.hq.airdex.data.entity.MapSector;
 import kz.hq.airdex.data.mapper.AirSensorSignalMapper;
@@ -50,9 +51,9 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
     }
 
     @Override
-    public List<AirSensorSignalDto> findAll(Long sectorId) {
+    public List<AirSensorSignalDto> findAll(Long sectorId, AqiQuery query) {
         var signals = Optional.ofNullable(sectorId)
-            .map(sensorSignalRepository::findAllBySector)
+            .map(id -> sensorSignalRepository.findAllBySector(sectorId, query.getStartDate(), query.getEndDate()))
             .orElse(this.findAll());
         return sensorSignalMapper.map(signals);
     }
