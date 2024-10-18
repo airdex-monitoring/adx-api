@@ -1,6 +1,7 @@
 package kz.hq.airdex.service.impl;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import kz.hq.airdex.data.entity.LatLngPoint;
@@ -57,12 +58,12 @@ public class MapSectorServiceImpl implements MapSectorService {
             int vertices = points.size();
             int crossings = 0;
 
-            for (int i = 0; i < vertices - 1; i++) {
+            for (int i = 0; i < vertices; i++) {
                 var p1 = points.get(i);
                 var p2 = points.get((i + 1) % vertices);
 
                 if (isPointIntersecting(point, p1, p2)) {
-                    crossings += 1;
+                    crossings++;
                 }
             }
 
@@ -70,8 +71,35 @@ public class MapSectorServiceImpl implements MapSectorService {
         };
     }
 
+    /**
+     * Determines if a point is intersecting with a line polygon formed by two other points.
+     * <p>
+     * The method checks two conditions:
+     * 1. Whether the point's latitude is between the latitudes of the polygon's endpoints.
+     * 2. Whether the point is to the left of the line polygon based on its longitude.
+     *
+     * @param point {@link LatLngPoint} The point to test for intersection.
+     * @param p1 {@link LatLngPoint} The first endpoint of the line segment.
+     * @param p2 {@link LatLngPoint} The second endpoint of the line segment.
+     * @return {@code true} if the point is considered intersecting with the line segment, false otherwise.
+     */
     private boolean isPointIntersecting(LatLngPoint point, LatLngPoint p1, LatLngPoint p2) {
-        return p1.getLat() <= point.getLat() && point.getLat() < p2.getLat() && (point.getLon() - p1.getLon())
-            * (p2.getLat() - p1.getLat()) < (p2.getLon() - p1.getLon()) * (point.getLat() - p1.getLat());
+        if (p1.getLat() > p2.getLat()) {
+            LatLngPoint temp = p1;
+            p1 = p2;
+            p2 = temp;
+        }
+
+        if (point.getLat().equals(p1.getLat()) || point.getLat().equals(p2.getLat())) {
+            point = new LatLngPoint(point.getLat() + 0.00001, point.getLon());
+        }
+
+        if (p1.getLat().equals(p2.getLat())) {
+            return false;
+        }
+
+        final var isLatitudeBetween = p1.getLat() <= point.getLat() && point.getLat() < p2.getLat();
+        final var isLeftOfIntersection = (point.getLon() - p1.getLon()) * (p2.getLat() - p1.getLat()) < (p2.getLon() - p1.getLon()) * (point.getLat() - p1.getLat());
+        return isLatitudeBetween && isLeftOfIntersection
     }
 }
