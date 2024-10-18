@@ -83,6 +83,10 @@ public class MapSectorServiceImpl implements MapSectorService {
      * @return {@code true} if the point is considered intersecting with the line segment, false otherwise.
      */
     private boolean isPointIntersecting(LatLngPoint point, LatLngPoint p1, LatLngPoint p2) {
+        if (p1 == null || p2 == null) {
+            throw new IllegalArgumentException("Line point appears to be null");
+        }
+
         if (p1.getLat() > p2.getLat()) {
             LatLngPoint temp = p1;
             p1 = p2;
