@@ -1,7 +1,6 @@
 package kz.hq.airdex.service.impl;
 
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
 import java.util.function.Predicate;
 import kz.hq.airdex.data.entity.LatLngPoint;
@@ -100,6 +99,6 @@ public class MapSectorServiceImpl implements MapSectorService {
 
         final var isLatitudeBetween = p1.getLat() <= point.getLat() && point.getLat() < p2.getLat();
         final var isLeftOfIntersection = (point.getLon() - p1.getLon()) * (p2.getLat() - p1.getLat()) < (p2.getLon() - p1.getLon()) * (point.getLat() - p1.getLat());
-        return isLatitudeBetween && isLeftOfIntersection
+        return isLatitudeBetween && isLeftOfIntersection;
     }
 }
