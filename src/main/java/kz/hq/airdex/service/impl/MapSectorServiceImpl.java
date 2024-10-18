@@ -8,7 +8,7 @@ import kz.hq.airdex.data.entity.MapSector;
 import kz.hq.airdex.data.entity.query.MapSectorAvg;
 import kz.hq.airdex.data.repository.MapSectorRepository;
 import kz.hq.airdex.data.repository.MapSectorStatsRepository;
-import kz.hq.airdex.spatialprocessors.RayCastingAlgorithm;
+import kz.hq.airdex.spatialprocessors.BoundingBoxAlgorithm;
 import kz.hq.airdex.spatialprocessors.abs.SpatialAlgorithm;
 import kz.hq.airdex.service.AirQualityIndexProvider;
 import kz.hq.airdex.service.MapSectorService;
@@ -55,7 +55,7 @@ public class MapSectorServiceImpl implements MapSectorService {
 
     public Predicate<MapSector> applySpatialAlgorithm(LatLngPoint point) {
         return sector -> {
-            SpatialAlgorithm spatial = new RayCastingAlgorithm(point, sector.getPoints());
+            SpatialAlgorithm spatial = new BoundingBoxAlgorithm(point, sector.getPoints());
             return spatial.isPointInsidePolygon();
         };
     }
