@@ -8,6 +8,8 @@ import kz.hq.airdex.data.entity.MapSector;
 import kz.hq.airdex.data.entity.query.MapSectorAvg;
 import kz.hq.airdex.data.repository.MapSectorRepository;
 import kz.hq.airdex.data.repository.MapSectorStatsRepository;
+import kz.hq.airdex.spatialprocessors.RayCastingAlgorithm;
+import kz.hq.airdex.spatialprocessors.abs.SpatialAlgorithm;
 import kz.hq.airdex.service.AirQualityIndexProvider;
 import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
@@ -47,31 +49,14 @@ public class MapSectorServiceImpl implements MapSectorService {
         }
 
         return sectorRepository.findAll().stream()
-            .filter(applyRayCasting(point))
+            .filter(applySpatialAlgorithm(point))
             .findFirst();
     }
 
-    private Predicate<MapSector> applyRayCasting(LatLngPoint point) {
+    public Predicate<MapSector> applySpatialAlgorithm(LatLngPoint point) {
         return sector -> {
-            var points = sector.getPoints();
-            int vertices = points.size();
-            int crossings = 0;
-
-            for (int i = 0; i < vertices - 1; i++) {
-                var p1 = points.get(i);
-                var p2 = points.get((i + 1) % vertices);
-
-                if (isPointIntersecting(point, p1, p2)) {
-                    crossings += 1;
-                }
-            }
-
-            return crossings % 2 == 1;
+            SpatialAlgorithm spatial = new RayCastingAlgorithm(point, sector.getPoints());
+            return spatial.isPointInsidePolygon();
         };
-    }
-
-    private boolean isPointIntersecting(LatLngPoint point, LatLngPoint p1, LatLngPoint p2) {
-        return p1.getLat() <= point.getLat() && point.getLat() < p2.getLat() && (point.getLon() - p1.getLon())
-            * (p2.getLat() - p1.getLat()) < (p2.getLon() - p1.getLon()) * (point.getLat() - p1.getLat());
     }
 }
