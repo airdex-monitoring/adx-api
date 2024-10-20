@@ -47,4 +47,5 @@ jobs:
           ADX_DATASOURCE_USERNAME: ${{ secrets.ADX_DATASOURCE_USERNAME }}
           ADX_DATASOURCE_PASSWORD: ${{ secrets.ADX_DATASOURCE_PASSWORD }}
         run: |
+          export SSL_KEYSTORE_PASSWORD=$(cat /run/secrets/ssl_keystore_password)
           docker stack deploy -c docker-compose-apistack.yml --with-registry-auth adx-api
