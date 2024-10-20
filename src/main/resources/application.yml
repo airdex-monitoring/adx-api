@@ -17,3 +17,8 @@ spring:
 
 server:
   port: ${ADX_API_PORT:8080}
+  ssl:
+    key-store: ${SSL_KEYSTORE_LOCATION}
+    key-store-password: ${SSL_KEYSTORE_PASSWORD}
+    keyStoreType: PKCS12
+    keyAlias: tomcat
