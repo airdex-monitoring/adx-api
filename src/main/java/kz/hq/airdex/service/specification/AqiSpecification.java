@@ -7,7 +7,6 @@ import java.util.Optional;
 import kz.hq.airdex.data.dto.request.AqiQuery;
 import kz.hq.airdex.data.entity.AirSensorSignal;
 import org.springframework.data.domain.Sort.Direction;
-import org.springframework.data.domain.Sort.Order;
 import org.springframework.data.jpa.domain.Specification;
 
 public class AqiSpecification {
@@ -21,7 +20,7 @@ public class AqiSpecification {
             .orElse(criteriaBuilder.conjunction());
     }
 
-    public static Specification<AirSensorSignal> byDateRange(LocalDate startDate, LocalDate endDate) {
+    public static Specification<AirSensorSignal> byCreateDateRange(LocalDate startDate, LocalDate endDate) {
         return (root, query, criteriaBuilder) -> {
             if (startDate == null || endDate == null) {
                 return criteriaBuilder.conjunction();
@@ -34,16 +33,26 @@ public class AqiSpecification {
 
     public static Specification<AirSensorSignal> sortByCreateDate(Direction sortDirection) {
         return (root, query, criteriaBuilder) -> {
-            query.;
+            if (query == null) {
+                return criteriaBuilder.conjunction();
+            }
+
+            if (sortDirection.isAscending()) {
+                query.orderBy(criteriaBuilder.asc(root.get("createDate")));
+            } else {
+                query.orderBy(criteriaBuilder.desc(root.get("createDate")));
+            }
             return criteriaBuilder.conjunction();
-        }
+        };
     }
 
     public static Specification<AirSensorSignal> getParameters(AqiQuery query) {
         return Optional.of(query)
             .map(q -> allOf(
                 bySectorId(q.getSectorId()),
-                byDateRange(q.getStartDate(), q.getEndDate())
-            ));
+                byCreateDateRange(q.getStartDate(), q.getEndDate()),
+                sortByCreateDate(Direction.DESC)
+            ))
+            .orElse(sortByCreateDate(Direction.DESC));
     }
 }

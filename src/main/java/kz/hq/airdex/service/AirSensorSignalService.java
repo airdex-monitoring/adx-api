@@ -6,6 +6,7 @@ import kz.hq.airdex.data.dto.request.AirSensorSignalAcceptRequest;
 import java.util.List;
 import kz.hq.airdex.data.dto.request.AqiQuery;
 import kz.hq.airdex.data.entity.AirSensorSignal;
+import kz.hq.airdex.data.entity.query.AqiEntryAvg;
 
 public interface AirSensorSignalService {
 
@@ -14,4 +15,6 @@ public interface AirSensorSignalService {
     List<AirSensorSignal> findAll();
 
     List<AirSensorSignalDto> findAll(Long sectorId, AqiQuery query);
+
+    AqiEntryAvg getAllAvg(Long sectorId);
 }

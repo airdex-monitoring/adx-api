@@ -21,7 +21,7 @@ public class AqiController {
     private final AirSensorSignalService airSensorSignalService;
     private final MapSectorService mapSectorService;
 
-    @GetMapping
+    @GetMapping("/entries")
     public List<AirSensorSignalDto> findAll(
         @RequestParam(required = false) Long sectorId,
         AqiQuery query
@@ -29,8 +29,18 @@ public class AqiController {
         return airSensorSignalService.findAll(sectorId, query);
     }
 
+    @GetMapping("/entries-avg")
+    public List<AirSensorSignalDto> findAllAvg(
+        @RequestParam(required = false) Long sectorId,
+        AqiQuery query
+    ) {
+        return airSensorSignalService.findAll(sectorId, query);
+    }
+
     @GetMapping("/map-sectors-avg")
-    public List<?> findAllMapSectors(MapSectorQuery query) {
+    public List<?> findAllMapSectorsAvg(
+        MapSectorQuery query
+    ) {
         return mapSectorService.getAllWithAvg(query);
     }
 }
