@@ -65,8 +65,17 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
     }
 
     @Override
-    public AqiEntryAvg getAllAvg(AqiQuery query) {
-        return sensorSignalsStatsRepository.findAllWithAvg();
+    public AqiEntryAvg getAvg(AqiQuery query) {
+        var data = Optional.ofNullable(query)
+            .filter(q -> q.getStartDate() != null || q.getEndDate() != null)
+            .map(q -> sensorSignalsStatsRepository.getAvg(q.getStartDate(), q.getEndDate()))
+            .orElse(sensorSignalsStatsRepository.getAvg());
+
+        data.setAqiAvgLevel(airQualityIndexProvider.getAqiLevel(data.getAqiAvg()));
+        data.setAqiMinLevel(airQualityIndexProvider.getAqiLevel(data.getAqiMin()));
+        data.setAqiMaxLevel(airQualityIndexProvider.getAqiLevel(data.getAqiMax()));
+
+        return data;
     }
 
     private AirSensorSignal setAqiData(AirSensorSignal signal) {

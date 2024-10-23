@@ -16,5 +16,5 @@ public interface AirSensorSignalService {
 
     List<AirSensorSignalDto> findAll(Long sectorId, AqiQuery query);
 
-    AqiEntryAvg getAllAvg(Long sectorId);
+    AqiEntryAvg getAvg(AqiQuery query);
 }

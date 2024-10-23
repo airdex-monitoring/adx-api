@@ -1,11 +1,10 @@
 package kz.hq.airdex.data.repository.impl;
 
 import java.time.LocalDate;
-import java.util.List;
+
 import kz.hq.airdex.data.entity.query.AqiEntryAvg;
-import kz.hq.airdex.data.entity.query.MapSectorAvg;
 import kz.hq.airdex.data.repository.AirSensorSignalsStatsRepository;
-import kz.hq.airdex.data.repository.Query.Aqis;
+import kz.hq.airdex.data.repository.Query.AqiStats;
 import lombok.RequiredArgsConstructor;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.namedparam.MapSqlParameterSource;
@@ -18,12 +17,28 @@ public class AirSensorSignalsStatsRepositoryImpl implements AirSensorSignalsStat
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public List<AqiEntryAvg> findAllWithAvg(LocalDate startDate, LocalDate endDate) {
+    public AqiEntryAvg getAvg(LocalDate startDate, LocalDate endDate) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("startDate", startDate);
         parameters.addValue("endDate", endDate);
         return jdbcTemplate.query(
-            Aqis.SELECT_AQI_WITH_AVG,
-            BeanPropertyRowMapper.newInstance(AqiEntryAvg.class));
+            AqiStats.SELECT_AQI_WITH_AVG_DATE_RANGE,
+            parameters,
+            BeanPropertyRowMapper.newInstance(AqiEntryAvg.class)
+            )
+            .stream()
+            .findFirst()
+            .orElse(null);
+    }
+
+    @Override
+    public AqiEntryAvg getAvg() {
+        return jdbcTemplate.query(
+                AqiStats.SELECT_AQI_WITH_AVG,
+                BeanPropertyRowMapper.newInstance(AqiEntryAvg.class)
+            )
+            .stream()
+            .findFirst()
+            .orElse(null);
     }
 }
