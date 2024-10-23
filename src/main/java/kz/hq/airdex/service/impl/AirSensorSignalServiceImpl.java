@@ -1,12 +1,17 @@
 package kz.hq.airdex.service.impl;
 
-import java.util.Collections;
+
+import static kz.hq.airdex.service.specification.AqiSpecification.getParameters;
+
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
 import kz.hq.airdex.data.dto.request.AirSensorSignalAcceptRequest;
+import kz.hq.airdex.data.dto.request.AqiQuery;
 import kz.hq.airdex.data.entity.AirSensorSignal;
 import kz.hq.airdex.data.entity.MapSector;
+import kz.hq.airdex.data.entity.query.AqiEntryAvg;
 import kz.hq.airdex.data.mapper.AirSensorSignalMapper;
 import kz.hq.airdex.data.repository.AirSensorSignalRepository;
+import kz.hq.airdex.data.repository.AirSensorSignalsStatsRepository;
 import kz.hq.airdex.service.AirQualityIndexProvider;
 import kz.hq.airdex.service.AirSensorSignalService;
 import kz.hq.airdex.service.MapSectorService;
@@ -22,6 +27,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class AirSensorSignalServiceImpl implements AirSensorSignalService {
     private final AirSensorSignalRepository sensorSignalRepository;
+    private final AirSensorSignalsStatsRepository sensorSignalsStatsRepository;
     private final AirSensorSignalMapper sensorSignalMapper;
 
     private final AirQualityIndexProvider airQualityIndexProvider;
@@ -50,11 +56,26 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
     }
 
     @Override
-    public List<AirSensorSignalDto> findAll(Long sectorId) {
+    public List<AirSensorSignalDto> findAll(Long sectorId, AqiQuery query) {
         var signals = Optional.ofNullable(sectorId)
-            .map(sensorSignalRepository::findAllBySector)
+            .map(id -> getParameters(query))
+            .map(sensorSignalRepository::findAll)
             .orElse(this.findAll());
         return sensorSignalMapper.map(signals);
+    }
+
+    @Override
+    public AqiEntryAvg getAvg(AqiQuery query) {
+        var data = Optional.ofNullable(query)
+            .filter(q -> q.getStartDate() != null || q.getEndDate() != null)
+            .map(q -> sensorSignalsStatsRepository.getAvg(q.getStartDate(), q.getEndDate()))
+            .orElse(sensorSignalsStatsRepository.getAvg());
+
+        data.setAqiAvgLevel(airQualityIndexProvider.getAqiLevel(data.getAqiAvg()));
+        data.setAqiMinLevel(airQualityIndexProvider.getAqiLevel(data.getAqiMin()));
+        data.setAqiMaxLevel(airQualityIndexProvider.getAqiLevel(data.getAqiMax()));
+
+        return data;
     }
 
     private AirSensorSignal setAqiData(AirSensorSignal signal) {

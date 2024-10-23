@@ -3,6 +3,8 @@ package kz.hq.airdex.service.impl;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+
+import kz.hq.airdex.data.dto.request.MapSectorQuery;
 import kz.hq.airdex.data.entity.LatLngPoint;
 import kz.hq.airdex.data.entity.MapSector;
 import kz.hq.airdex.data.entity.query.MapSectorAvg;
@@ -30,9 +32,12 @@ public class MapSectorServiceImpl implements MapSectorService {
     }
 
     @Override
-    public List<MapSectorAvg> getAllWithAvg() {
-        var sectors = sectorStatsRepository.findAllWithAvg();
-        return sectors.stream()
+    public List<MapSectorAvg> getAllWithAvg(MapSectorQuery query) {
+        return Optional.of(query)
+            .filter(q -> q.getStartDate() != null || q.getEndDate() != null)
+            .map(q -> sectorStatsRepository.findAllWithAvg(q.getStartDate(), q.getEndDate()))
+            .orElse(sectorStatsRepository.findAllWithAvg())
+            .stream()
             .peek(sector -> {
                 var aqiLevel = airQualityIndexProvider.getAqiLevel(sector.getAqiAvg());
                 sector.setAqiLevel(aqiLevel);
