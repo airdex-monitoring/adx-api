@@ -19,5 +19,5 @@ public interface AirSensorSignalRepository extends
                 a.sector.id = :sectorId AND
                 (a.createDate >= :startDate AND a.createDate <= :endDate)
     """)
-    List<AirSensorSignal> findAllBySector(Long sectorId, LocalDate startDate, LocalDate endDate);
+    List<AirSensorSignal> findAllBySectorId(Long sectorId, LocalDate startDate, LocalDate endDate);
 }

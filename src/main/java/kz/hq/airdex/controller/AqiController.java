@@ -10,7 +10,6 @@ import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -22,15 +21,13 @@ public class AqiController {
 
     @GetMapping("/entries")
     public List<AirSensorSignalDto> findAll(
-        @RequestParam(required = false) Long sectorId,
         AqiQuery query
     ) {
-        return airSensorSignalService.findAll(sectorId, query);
+        return airSensorSignalService.findAll(query);
     }
 
     @GetMapping("/entries-avg")
     public AqiEntryAvg findAllAvg(
-        @RequestParam(required = false) Long sectorId,
         AqiQuery query
     ) {
         return airSensorSignalService.getAvg(query);
