@@ -1,12 +1,11 @@
 package kz.hq.airdex.data.repository;
 
-import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 import kz.hq.airdex.data.entity.query.AqiEntryAvg;
 
 public interface AirSensorSignalsStatsRepository {
 
-    AqiEntryAvg getAvg(LocalDate startDate, LocalDate endDate);
+    AqiEntryAvg getAvg(LocalDateTime startDate, LocalDateTime endDate);
 
     AqiEntryAvg getAvg();
 }

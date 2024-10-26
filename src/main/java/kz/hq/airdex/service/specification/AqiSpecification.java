@@ -2,7 +2,7 @@ package kz.hq.airdex.service.specification;
 
 import static org.springframework.data.jpa.domain.Specification.allOf;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Optional;
 import kz.hq.airdex.data.dto.request.AqiQuery;
 import kz.hq.airdex.data.entity.AirSensorSignal;
@@ -20,7 +20,7 @@ public class AqiSpecification {
             .orElse(criteriaBuilder.conjunction());
     }
 
-    public static Specification<AirSensorSignal> byCreateDateRange(LocalDate startDate, LocalDate endDate) {
+    public static Specification<AirSensorSignal> byCreateDateRange(LocalDateTime startDate, LocalDateTime endDate) {
         return (root, query, criteriaBuilder) -> {
             if (startDate == null || endDate == null) {
                 return criteriaBuilder.conjunction();
