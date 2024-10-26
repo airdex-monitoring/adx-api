@@ -1,7 +1,6 @@
 package kz.hq.airdex.data.repository.impl;
 
-import java.time.LocalDate;
-
+import java.time.LocalDateTime;
 import kz.hq.airdex.data.entity.query.AqiEntryAvg;
 import kz.hq.airdex.data.repository.AirSensorSignalsStatsRepository;
 import kz.hq.airdex.data.repository.Query.AqiStats;
@@ -17,7 +16,7 @@ public class AirSensorSignalsStatsRepositoryImpl implements AirSensorSignalsStat
     private final NamedParameterJdbcTemplate jdbcTemplate;
 
     @Override
-    public AqiEntryAvg getAvg(LocalDate startDate, LocalDate endDate) {
+    public AqiEntryAvg getAvg(LocalDateTime startDate, LocalDateTime endDate) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("startDate", startDate);
         parameters.addValue("endDate", endDate);

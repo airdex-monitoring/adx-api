@@ -1,6 +1,6 @@
 package kz.hq.airdex.data.repository.impl;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 import kz.hq.airdex.data.entity.query.MapSectorAvg;
 import kz.hq.airdex.data.repository.MapSectorStatsRepository;
@@ -24,7 +24,7 @@ public class MapSectorStatsRepositoryImpl implements MapSectorStatsRepository {
     }
 
     @Override
-    public List<MapSectorAvg> findAllWithAvg(LocalDate startDate, LocalDate endDate) {
+    public List<MapSectorAvg> findAllWithAvg(LocalDateTime startDate, LocalDateTime endDate) {
         MapSqlParameterSource parameters = new MapSqlParameterSource();
         parameters.addValue("startDate", startDate);
         parameters.addValue("endDate", endDate);

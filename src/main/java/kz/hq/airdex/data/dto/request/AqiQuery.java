@@ -1,6 +1,6 @@
 package kz.hq.airdex.data.dto.request;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -15,8 +15,8 @@ public class AqiQuery {
 
     private Long sectorId;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate startDate;
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
-    private LocalDate endDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    private LocalDateTime startDate;
+    @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm")
+    private LocalDateTime endDate;
 }
