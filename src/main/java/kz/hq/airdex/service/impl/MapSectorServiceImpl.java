@@ -15,9 +15,8 @@ import kz.hq.airdex.spatialprocessors.abs.SpatialAlgorithm;
 import kz.hq.airdex.service.AirQualityIndexProvider;
 import kz.hq.airdex.service.MapSectorService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Sort;
-import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
@@ -27,12 +26,7 @@ public class MapSectorServiceImpl implements MapSectorService {
 
     private final AirQualityIndexProvider airQualityIndexProvider;
 
-    @Override
-    public List<MapSector> getAll() {
-        return sectorRepository.findAll(
-            Sort.by(Direction.ASC, "code"));
-    }
-
+    @Transactional(readOnly = true)
     @Override
     public List<MapSectorAvg> getAllWithAvg(MapSectorQuery query) {
         return Optional.of(query)
@@ -47,6 +41,7 @@ public class MapSectorServiceImpl implements MapSectorService {
             .toList();
     }
 
+    @Transactional(readOnly = true)
     @Override
     public Optional<MapSector> determineSector(LatLngPoint point) {
         if (point == null) {
