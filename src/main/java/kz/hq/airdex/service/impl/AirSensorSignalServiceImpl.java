@@ -1,6 +1,5 @@
 package kz.hq.airdex.service.impl;
 
-
 import kz.hq.airdex.data.dto.AirSensorSignalDto;
 import kz.hq.airdex.data.dto.request.AirSensorSignalAcceptRequest;
 import kz.hq.airdex.data.dto.request.AqiQuery;
@@ -16,6 +15,8 @@ import kz.hq.airdex.service.MapSectorService;
 import kz.hq.airdex.service.specification.AqiSpecification;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Isolation;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -30,6 +31,7 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
     private final AirQualityIndexProvider airQualityIndexProvider;
     private final MapSectorService mapSectorService;
 
+    @Transactional
     @Override
     public AirSensorSignalDto save(AirSensorSignalAcceptRequest payload) {
         return Optional.ofNullable(payload)
