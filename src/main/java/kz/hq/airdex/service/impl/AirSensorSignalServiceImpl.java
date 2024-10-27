@@ -44,6 +44,7 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
             .orElse(null);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public List<AirSensorSignalDto> findAll(AqiQuery query) {
         var signals = Optional.ofNullable(query)
@@ -53,6 +54,7 @@ public class AirSensorSignalServiceImpl implements AirSensorSignalService {
         return sensorSignalMapper.map(signals);
     }
 
+    @Transactional(readOnly = true)
     @Override
     public AqiEntryAvg getAvg(AqiQuery query) {
         var data = Optional.ofNullable(query)
